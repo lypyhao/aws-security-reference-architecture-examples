@@ -169,6 +169,7 @@ def get_enabled_regions() -> list:  # noqa: CCR001
     # available_regions = management_account_session.get_available_regions("sts") # noqa: E800
     default_available_regions = [
         "eu-central-1",
+        "ap-east-1",
         "ap-northeast-1",
         "sa-east-1",
         "ap-southeast-1",
@@ -297,8 +298,8 @@ def get_enabled_regions_ssm_parameter_info(home_region: str, path: str) -> dict:
     """
     ssm_data: dict = {"info": []}
     enabled_regions = get_enabled_regions()
-    if home_region in enabled_regions_without_home_region:
-        enabled_regions_without_home_region.remove(home_region)
+    enabled_regions_without_home_region = enabled_regions.copy()
+    enabled_regions_without_home_region.remove(home_region)
 
     ssm_data["info"].append({"name": f"{path}/enabled-regions", "value": ",".join(enabled_regions), "parameter_type": "StringList"})
     ssm_data["info"].append(
